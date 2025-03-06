@@ -55,7 +55,7 @@ app.post("/api/signup", async (req, res) => {
 app.get("/api/login")
 
 app.listen(8080, () => {
-    console.log("starteed on 8080");
+    console.log("started on 8080");
 })
 
 module.exports = app;
