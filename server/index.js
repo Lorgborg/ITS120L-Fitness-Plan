@@ -25,7 +25,7 @@ async function connectToMongoDB() {
       await client.connect();
       console.log('Connected to MongoDB');
   
-      // Return the connected client
+      // Return the connected client~
       return client;
     } catch (error) {
       console.error('Error connecting to MongoDB:', error);
@@ -57,3 +57,5 @@ app.get("/api/login")
 app.listen(8080, () => {
     console.log("starteed on 8080");
 })
+
+module.exports = app;
