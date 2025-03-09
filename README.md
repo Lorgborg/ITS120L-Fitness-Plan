@@ -13,3 +13,7 @@ After cloning the repository, open a terminal navigated to CLONED_DIRECTORY/MyFi
 ## Back-end
 
 open a terminal and navigate to CLONED_DIRECTORY/server. Run the command "npm install". Within the .env file and contact me for the content of the file. Finally, run the command "npm run dev". The back-end should now be running
+
+## Changes
+
+When developing the application, please use the dev branch instead of main. The main branch is connected to a live service
