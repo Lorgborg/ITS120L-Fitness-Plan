@@ -1,14 +1,18 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+require('dotenv').config(); // Load environment variables from .env
 const app = express();
 const cors  = require("cors");
+
 const corsOptions = {
-    origin: "http://localhost:5173"
+    origin: process.env.origin
 }
-require('dotenv').config(); // Load environment variables from .env
+const jwtDecode = require("jwt-decode");
+
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = process.env.uri;
+const origin = process.env.origin;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -38,6 +42,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(bodyParser.json())
 
 app.get("/api", ( req, res) => {
     console.log("I enter this lmao")
@@ -45,14 +50,30 @@ app.get("/api", ( req, res) => {
 })
 
 app.post("/api/signup", async (req, res) => {
-    console.log(req.body)
-    let connection = await connectToMongoDB();
-    const collection = connection.db('MyFit').collection("users");
-    await collection.insertOne({username: req.body.username, password: req.body.password});
-    res.send("http://localhost:5173/home")
+  console.log(req.body)
+  let connection = await connectToMongoDB();
+  const collection = connection.db('MyFit').collection("users");
+  await collection.insertOne({
+    email: req.body.email,
+    username: req.body.username,
+    weight: req.body.weight,
+    nationality: req.body.nationality,
+    idealWeight: req.body.idealWeight
+  });
+  res.send(origin + "/dashboard")
 })
 
-app.get("/api/login")
+app.post("/api/login", async (req, res) => { 
+  const decoded = jwtDecode.jwtDecode(req.body.raw);
+  let connection = await connectToMongoDB();
+  const collection = connection.db('MyFit').collection('users');
+  const exists = await collection.findOne({ email: decoded.email })
+  if(exists) {
+    res.send("yeah")
+  } else {
+    res.redirect(origin + "/signup")
+  }
+})
 
 app.listen(8080, () => {
     console.log("started on 8080");
