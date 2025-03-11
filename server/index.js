@@ -65,25 +65,24 @@ app.post("/api/signup", async (req, res) => {
     nationality: req.body.nationality,
     idealWeight: req.body.idealWeight
   });
-  res.send(origin + "/dashboard")
 })
 
 app.post("/api/login", async (req, res) => { 
   const decoded = jwtDecode.jwtDecode(req.body.raw);
   let connection = await connectToMongoDB();
+  console.log("received mail: " + decoded.email)
   const collection = connection.db('MyFit').collection('users');
   const exists = await collection.findOne({ email: decoded.email })
   if(exists) {
-    console.log("sending back dashboard")
     res.status(201).json(({
-      status: 'success',
+      status: decoded,
       message: "../dashboard",
       id: 1,
     }))
-  } else {
-    console.log("sending back signunp")
+  } else if (!exists) {
+    console.log("sending back signunp: " + decoded)
     res.status(201).json(({
-      status: decoded.email,
+      status: decoded,
       message: "../signup",
       id: 1,
     }))

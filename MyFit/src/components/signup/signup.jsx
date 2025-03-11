@@ -5,14 +5,17 @@ import { useLocation } from "react-router-dom";
 
 
 function Signup() {
+
    const location = useLocation();
    const email = location.state?.email || '';
+   const name = location.state?.name || '';
 
-   console.log(email)
+   console.log("signup email: " + email)
+   console.log("signup name: " + name)
 
    return (
       <>
-         <h1>Lets Get You Started</h1>
+         <h1>Lets Get You Started, {name}</h1>
             <form action="http://localhost:8080/api/signup" method="post">
                <input type="hidden" name="email" defaultValue={email}/>
                <label htmlFor="username">Username</label>

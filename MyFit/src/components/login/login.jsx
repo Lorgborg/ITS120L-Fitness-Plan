@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet"
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -12,25 +12,30 @@ import { useNavigate } from 'react-router-dom';
 function Login() {
    const navigate = useNavigate();
    const [email, setEmail] = useState('');
+   const [name, setName] = useState('');
+   
 
-   const handleSuccess = async (credentialResponse) => {
-      console.log("Pulling from http://localhost:8080/api/login")
-         const res = await fetch("http://localhost:8080/api/login", {
-            method: 'post',
-            headers: {
-               'Accept': 'application/json',
-               'Content-Type': 'application/json'
-               },
-            body: JSON.stringify({raw: credentialResponse.credential}),
-         })
-         if(res.status == 201) {
-            const data = await res.json()
-            setEmail(data.status)
-            navigate("../signup", {state: {email} })
-            console.log(email)
-         }
-      }
-
+const handleSuccess = async (credentialResponse) => {
+   console.log("Pulling from http://localhost:8080/api/login")
+   const res = await fetch("http://localhost:8080/api/login", {
+      method: 'post',
+      headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ raw: credentialResponse.credential }),
+   })
+   if (res.status === 201) {
+      const data = await res.json()
+      const email = data.status.email; // Assuming the response contains the email
+      const name = data.status.given_name;
+      setName(name);
+      setEmail(email); // Set the email state
+      navigate(data.message, { state: { email, name } }) // Pass the email directly
+      console.log({ email: email })
+      console.log({ data: data.status.given_name })
+   }
+}
    return (
       <div>
          <Helmet>
