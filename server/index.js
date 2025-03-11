@@ -3,9 +3,10 @@ const bodyParser = require("body-parser");
 require('dotenv').config(); // Load environment variables from .env
 const app = express();
 const cors  = require("cors");
+const OpenAI = require("openai");
 
 const corsOptions = {
-    origin: process.env.origin
+    origin: "*"
 }
 const jwtDecode = require("jwt-decode");
 
@@ -13,6 +14,10 @@ const jwtDecode = require("jwt-decode");
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = process.env.uri;
 const origin = process.env.origin;
+
+const openai = new OpenAI({
+  apiKey: process.env.openAiKey,
+});
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -69,10 +74,33 @@ app.post("/api/login", async (req, res) => {
   const collection = connection.db('MyFit').collection('users');
   const exists = await collection.findOne({ email: decoded.email })
   if(exists) {
-    res.send("yeah")
+    console.log("sending back dashboard")
+    res.status(201).json(({
+      status: 'success',
+      message: "../dashboard",
+      id: 1,
+    }))
   } else {
-    res.redirect(origin + "/signup")
+    console.log("sending back signunp")
+    res.status(201).json(({
+      status: decoded.email,
+      message: "../signup",
+      id: 1,
+    }))
   }
+})
+
+app.post("/api/getResponse", async (req, res) => {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    store: true,
+    messages: [
+      {"role": "user", "content": req.body.prompt},
+    ],
+  });
+  // const completion = { choices: [{message: {content: "testing"}}]}
+  console.log(completion)
+  res.status(201).json(completion.choices[0].message)
 })
 
 app.listen(8080, () => {

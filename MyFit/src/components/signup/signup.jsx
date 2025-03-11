@@ -1,14 +1,20 @@
 import React from "react";
 // import PropTypes from 'prop-types';
 // import { loginWrapper } from './login.styled';
+import { useLocation } from "react-router-dom";
 
 
 function Signup() {
+   const location = useLocation();
+   const email = location.state?.email || '';
+
+   console.log(email)
 
    return (
       <>
          <h1>Lets Get You Started</h1>
-            <form action="http://localhost/8080/api/signup" method="post">
+            <form action="http://localhost:8080/api/signup" method="post">
+               <input type="hidden" name="email" defaultValue={email}/>
                <label htmlFor="username">Username</label>
                <input type="text" name="username" id="username" required/>
                <label htmlFor="weight">Weight</label>
