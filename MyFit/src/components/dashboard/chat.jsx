@@ -23,7 +23,6 @@ const Chat = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: inputValue }), // Send the user's input as the prompt
         body: JSON.stringify({ prompt: inputValue, username: "Riniel", weight: 55, idealWeight: 65, nationality: "Philippines" }), // Send the user's input as the prompt
       });
       const response = await res.json();
@@ -38,7 +37,6 @@ const Chat = () => {
       // Optionally, add an error message to the chat history
       setMessages((prevMessages) => [
         ...prevMessages,
-        { role: 'assistant', content: 'Failed to fetch response. Please try again.' },
         { role: 'Assistant', content: 'Failed to fetch response. Please try again.' },
       ]);
     } finally {
