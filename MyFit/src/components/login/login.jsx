@@ -1,22 +1,10 @@
-<<<<<<< Updated upstream
-import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet"
-=======
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState  } from "react";
 import { Helmet } from "react-helmet";
->>>>>>> Stashed changes
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 
-<<<<<<< Updated upstream
-
-// import PropTypes from 'prop-types';
-// import { loginWrapper } from './login.styled';
-
-
-=======
->>>>>>> Stashed changes
 function Login() {
    const navigate = useNavigate();
    const [email, setEmail] = useState('');
@@ -45,11 +33,7 @@ const handleSuccess = async (credentialResponse) => {
    }
 }
    return (
-<<<<<<< Updated upstream
-      <div>
-=======
       <div className="min-h-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
->>>>>>> Stashed changes
          <Helmet>
             <title>MyFit - Login</title>
             <meta name="description" content="Login to MyFit - Track your calories and reach your fitness goals" />
@@ -57,19 +41,6 @@ const handleSuccess = async (credentialResponse) => {
             <meta property="og:title" content="MyFit - Your Personal Diet & Calorie Tracker" />
             <meta property="og:description" content="Track your calories, plan your diet, and reach your weight goals with MyFit" />
          </Helmet>
-<<<<<<< Updated upstream
-         <h1>LOGIN</h1>
-         <GoogleOAuthProvider clientId="788860631464-5frp9jdepqedqc0fhoprp8n3skl01i05.apps.googleusercontent.com">
-
-            <GoogleLogin
-               onSuccess={handleSuccess}
-               onError={() => {
-                  console.log('Login Failed');
-               }}
-               auto_select
-            />
-         </GoogleOAuthProvider>
-=======
          
          {/* Background elements */}
          <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#E5D0AC] opacity-50 -mb-32 -ml-32"></div>
@@ -101,32 +72,7 @@ const handleSuccess = async (credentialResponse) => {
                <div className="mb-8">
                   <GoogleOAuthProvider clientId="788860631464-5frp9jdepqedqc0fhoprp8n3skl01i05.apps.googleusercontent.com">
                      <GoogleLogin
-                        onSuccess={async credentialResponse => {
-                           const res = await fetch("http://localhost:8080/api/login", {
-                              method: 'post',
-                              headers: {
-                                 'Accept': 'application/json',
-                                 'Content-Type': 'application/json'
-                              },
-                              body: JSON.stringify({raw: credentialResponse.credential}),
-                           })
-                           
-                           if(res.status === 200) {
-                              // User exists, go to dashboard
-                              console.log("User logged in successfully")
-                              navigate('./dashboard')
-                           } else if(res.status === 404) {
-                              // User doesn't exist, go to signup
-                              console.log("New user, redirecting to signup")
-                              // Pass the Google credential to the signup page
-                              navigate('./signup', { 
-                                 state: { credential: credentialResponse.credential } 
-                              })
-                           } else {
-                              // Handle other errors
-                              console.log("Login error:", res.status)
-                           }
-                        }}
+                        onSuccess={handleSuccess}
                         onError={() => {
                            console.log('Login Failed');
                         }}
@@ -143,7 +89,6 @@ const handleSuccess = async (credentialResponse) => {
                </div>
             </div>
          </div>
->>>>>>> Stashed changes
       </div>
    );
 }

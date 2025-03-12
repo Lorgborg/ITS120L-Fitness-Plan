@@ -65,6 +65,7 @@ app.post("/api/signup", async (req, res) => {
     nationality: req.body.nationality,
     idealWeight: req.body.idealWeight
   });
+  res.redirect("http://localhost:5173/login")
 })
 
 app.post("/api/login", async (req, res) => { 
@@ -74,6 +75,7 @@ app.post("/api/login", async (req, res) => {
   const collection = connection.db('MyFit').collection('users');
   const exists = await collection.findOne({ email: decoded.email })
   if(exists) {
+    console.log("found")
     res.status(201).json(({
       status: decoded,
       message: "../dashboard",
@@ -89,16 +91,25 @@ app.post("/api/login", async (req, res) => {
   }
 })
 
+app.get("/api/getUser", async (req, res) => {
+  console.log(req.body)
+  let connection = await connectToMongoDB();
+  const collection = connection.db('MyFit').collection("users");
+  const user = await collection.findOne({email: req.body.email})
+  res.status(201).json(user)
+})
+
 app.post("/api/getResponse", async (req, res) => {
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     store: true,
     messages: [
+      {"role": "user", "content": `My name is ${req.body.username}, I am currently ${req.body.weight} and I would like to achieve a weight of ${req.body.idealWeight} and I live in ${req.body.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality. Remove all formatting`},
       {"role": "user", "content": req.body.prompt},
     ],
   });
   // const completion = { choices: [{message: {content: "testing"}}]}
-  console.log(completion)
+  console.log(completion.choices)
   res.status(201).json(completion.choices[0].message)
 })
 
