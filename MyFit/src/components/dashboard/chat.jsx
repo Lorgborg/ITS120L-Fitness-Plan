@@ -73,6 +73,7 @@ const Chat = () => {
 
       {/* Input form */}
       <form onSubmit={handleSubmit} style={styles.form}>
+        <div className='text-gray-600'> 
         <input
           type="text"
           value={inputValue}
@@ -80,7 +81,7 @@ const Chat = () => {
           placeholder="Type your message..."
           style={styles.input}
           disabled={loading} // Disable input while loading
-        />
+        /></div>
         <button type="submit" style={styles.button} disabled={loading}>
           Send
         </button>
@@ -124,7 +125,6 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     marginRight: '10px',
-    color: 'black'
   },
   button: {
     padding: '8px 16px',
