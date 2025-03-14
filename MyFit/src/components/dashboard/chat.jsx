@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 
-const Chat = () => {
+const Chat = (props) => {
   const [messages, setMessages] = useState([]); // Stores chat history
   const [inputValue, setInputValue] = useState(''); // Stores the input from the form
   const [loading, setLoading] = useState(false); // Tracks loading state for API call
   const messagesEndRef = useRef(null); // Ref for scrolling to the bottom of the chat
+  const user = props.user
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -23,7 +24,13 @@ const Chat = () => {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: inputValue, username: "Riniel", weight: 55, idealWeight: 65, nationality: "Philippines" }), // Send the user's input as the prompt
+        body: JSON.stringify({
+          prompt: inputValue,
+          username: user.username,
+          weight: user.weight,
+          idealWeight: user.idealWeight,
+          nationality: user.nationality
+        }), // Send the user's input as the prompt
       });
       const response = await res.json();
 

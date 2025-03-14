@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 function Signup() {
    const navigate = useNavigate();
@@ -112,7 +111,7 @@ function Signup() {
                   <div className="mb-4">
                      <label htmlFor="weight" className="block text-[#6D2323] font-medium mb-1">Weight</label>
                      <input 
-                        type="text" 
+                        type="text"
                         id="weight"
                         name="weight"
                         value={formData.weight}
