@@ -104,7 +104,7 @@ function Signup() {
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required 
                      />
                   </div>
@@ -117,7 +117,7 @@ function Signup() {
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required 
                      />
                   </div>
@@ -130,7 +130,7 @@ function Signup() {
                         name="time"
                         value={formData.time}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required 
                      />
                   </div>
@@ -143,7 +143,7 @@ function Signup() {
                         name="height"
                         value={formData.height}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required
                      />
                   </div>
@@ -156,7 +156,7 @@ function Signup() {
                         name="age"
                         value={formData.age}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required
                      />
                   </div>
@@ -169,7 +169,7 @@ function Signup() {
                         name="idealWeight"
                         value={formData.idealWeight}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
                         required 
                      />
                   </div>
@@ -181,7 +181,7 @@ function Signup() {
                         name="nationality" 
                         value={formData.nationality}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
                         required
                      >
                         <option value="">Select your nationality</option>
