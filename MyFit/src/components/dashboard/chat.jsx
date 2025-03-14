@@ -26,10 +26,7 @@ const Chat = (props) => {
         },
         body: JSON.stringify({
           prompt: inputValue,
-          username: user.username,
-          weight: user.weight,
-          idealWeight: user.idealWeight,
-          nationality: user.nationality
+          user: user
         }), // Send the user's input as the prompt
       });
       const response = await res.json();

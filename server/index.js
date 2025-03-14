@@ -108,11 +108,13 @@ app.post("/api/getUser", async (req, res) => {
 })
 
 app.post("/api/getResponse", async (req, res) => {
+  const user = req.body.user
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
     store: true,
     messages: [
-      {"role": "user", "content": `My name is ${req.body.username}, I am currently ${req.body.weight} and I would like to achieve a weight of ${req.body.idealWeight} and I live in ${req.body.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality.`},
+      {"role": "user", "content": `My name is ${user.username}, My weight is currently ${user.weight} kgs and I would like to achieve a weight of ${user.idealWeight} and I live in ${user.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality.`},
+      {"role": "user", "content": `Remember all my personal information when I ask the next prompts`},
       {"role": "user", "content": req.body.prompt},
     ],
   });
