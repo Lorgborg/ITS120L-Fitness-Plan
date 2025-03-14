@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 function Signup() {
    const navigate = useNavigate();
    const location = useLocation();
-   const googleCredential = location.state?.googleCredential;
    
    const [formData, setFormData] = useState({
       username: '',
       weight: '',
+      height: '',
       idealWeight: '',
-      nationality: ''
+      nationality: '',
+      age: '',
+      time: '',
    });
    
    const handleChange = (e) => {
@@ -22,40 +26,35 @@ function Signup() {
    
    const handleSubmit = async (e) => {
       e.preventDefault();
+   
+      const email = location.state?.email || '';
+
+      const res = await fetch("http://localhost:8080/api/signup", {
+         method: 'post',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            email: email,
+            username: formData.username,
+            weight: formData.weight,
+            height: formData.height,
+            age: formData.age,
+            nationality: formData.nationality,
+            idealWeight: formData.idealWeight,
+            time: formData.time,
+         }),
+      });
       
-      if (googleCredential) {
-         // User came from Google login, send both Google credentials and form data
-         const res = await fetch("http://localhost:8080/api/complete-signup", {
-            method: 'post',
-            headers: {
-               'Accept': 'application/json',
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-               googleCredential,
-               userData: formData
-            }),
-         });
-         
-         if(res.status === 200) {
-            console.log("Account created successfully");
-            navigate('./dashboard');
-         }
-      } else {
-         // This is a direct signup without Google credentials
-         console.log("Please use Google login");
-         // Or implement direct signup logic if needed
+      if(res.status === 200) {
+         console.log("Account created successfully");
+         navigate('../dashboard', {state: { email: email, name: formData.name } });
       }
    };
 
-   const email = location.state?.email || '';
-   const name = location.state?.name || '';
-
-   console.log("signup email: " + email)
-   console.log("signup name: " + name)
-
    return (
-      <div className="min-h-screen w-screen flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
+      <div className="min-h-screen w-full flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
          <Helmet>
             <title>MyFit - Create Account</title>
             <meta name="description" content="Sign up for MyFit - Your personal diet and calorie tracker" />
@@ -96,10 +95,6 @@ function Signup() {
                <h2 className="text-2xl font-bold text-[#6D2323] mb-2">Create Your Account</h2>
                <p className="text-gray-600 mb-6">Join MyFit and start tracking your nutrition</p>
                
-               {googleCredential ? (
-                  <p className="text-green-600 mb-4">Google account authenticated! Please complete your profile below.</p>
-               ) : null}
-               
                <form onSubmit={handleSubmit} className="mb-6">
                   <div className="mb-4">
                      <label htmlFor="username" className="block text-[#6D2323] font-medium mb-1">Username</label>
@@ -126,7 +121,46 @@ function Signup() {
                         required 
                      />
                   </div>
+
+                  <div className="mb-4">
+                     <label htmlFor="time" className="block text-[#6D2323] font-medium mb-1">Achieve By: </label>
+                     <input 
+                        type="date"
+                        id="time"
+                        name="time"
+                        value={formData.time}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        required 
+                     />
+                  </div>
                   
+                  <div className="mb-4">
+                     <label htmlFor="height" className="block text-[#6D2323] font-medium mb-1">Height</label>
+                     <input 
+                        type="number" 
+                        id="height"
+                        name="height"
+                        value={formData.height}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        required
+                     />
+                  </div>
+
+                  <div className="mb-4">
+                     <label htmlFor="age" className="block text-[#6D2323] font-medium mb-1">Age</label>
+                     <input 
+                        type="number" 
+                        id="age"
+                        name="age"
+                        value={formData.age}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        required
+                     />
+                  </div>
+
                   <div className="mb-4">
                      <label htmlFor="idealWeight" className="block text-[#6D2323] font-medium mb-1">Ideal Weight</label>
                      <input 
@@ -405,43 +439,6 @@ function Signup() {
                      Complete Profile
                   </button>
                </form>
-               
-               {!googleCredential && (
-                  <>
-                     <div className="flex items-center my-4">
-                        <div className="flex-grow border-t border-gray-300"></div>
-                        <span className="px-4 text-gray-500 text-sm">OR</span>
-                        <div className="flex-grow border-t border-gray-300"></div>
-                     </div>
-                     
-                     <div className="flex justify-center mb-6">
-                        <GoogleOAuthProvider clientId="788860631464-5frp9jdepqedqc0fhoprp8n3skl01i05.apps.googleusercontent.com">
-                           <GoogleLogin
-                              onSuccess={async credentialResponse => {
-                                 // Redirect to the same page but with the Google credential
-                                 navigate('.', { 
-                                    state: { 
-                                       googleCredential: credentialResponse.credential 
-                                    },
-                                    replace: true
-                                 });
-                              }}
-                              onError={() => {
-                                 console.log('Signup Failed');
-                              }}
-                              theme="outline"
-                              shape="rectangular"
-                              text="signup_with"
-                              size="large"
-                           />
-                        </GoogleOAuthProvider>
-                     </div>
-                  </>
-               )}
-               
-               <p className="text-center text-gray-600">
-                  Already have an account? <Link to="/login" className="text-[#A31D1D] font-medium">Log in</Link>
-               </p>
             </div>
          </div>
       </div>

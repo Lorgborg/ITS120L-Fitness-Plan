@@ -4,6 +4,7 @@ require('dotenv').config(); // Load environment variables from .env
 const app = express();
 const cors  = require("cors");
 const OpenAI = require("openai");
+const getDailyCalorie = require("./public/getDailyCalorie")
 
 const corsOptions = {
     origin: "*"
@@ -12,6 +13,7 @@ const jwtDecode = require("jwt-decode");
 
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const calculateDailyCalories = require("./public/getDailyCalorie");
 const uri = process.env.uri;
 const origin = process.env.origin;
 
@@ -58,14 +60,20 @@ app.post("/api/signup", async (req, res) => {
   console.log(req.body)
   let connection = await connectToMongoDB();
   const collection = connection.db('MyFit').collection("users");
+  const calculation = getDailyCalorie(req.body.weight, req.body.height, req.body.age, req.body.gender, req.body.idealWeight, req.body.time)
+  console.log(calculation)
   await collection.insertOne({
     email: req.body.email,
     username: req.body.username,
     weight: req.body.weight,
+    height: req.body.height,
+    age: req.body.age,
     nationality: req.body.nationality,
-    idealWeight: req.body.idealWeight
+    idealWeight: req.body.idealWeight,
+    dailyIntake: calculation.dailyCalorieIntake,
+    time: req.body.time
   });
-  res.redirect("http://localhost:5173/login")
+  res.status(200).send()
 })
 
 app.post("/api/login", async (req, res) => { 
@@ -91,7 +99,7 @@ app.post("/api/login", async (req, res) => {
   }
 })
 
-app.get("/api/getUser", async (req, res) => {
+app.post("/api/getUser", async (req, res) => {
   console.log(req.body)
   let connection = await connectToMongoDB();
   const collection = connection.db('MyFit').collection("users");
@@ -104,12 +112,24 @@ app.post("/api/getResponse", async (req, res) => {
     model: "gpt-4o-mini",
     store: true,
     messages: [
-      {"role": "user", "content": `My name is ${req.body.username}, I am currently ${req.body.weight} and I would like to achieve a weight of ${req.body.idealWeight} and I live in ${req.body.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality. Remove all formatting`},
+      {"role": "user", "content": `My name is ${req.body.username}, I am currently ${req.body.weight} and I would like to achieve a weight of ${req.body.idealWeight} and I live in ${req.body.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality.`},
       {"role": "user", "content": req.body.prompt},
     ],
   });
   // const completion = { choices: [{message: {content: "testing"}}]}
   console.log(completion.choices)
+  res.status(201).json(completion.choices[0].message)
+})
+
+app.post("/api/addMeal", async (req, res) => {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    store: true,
+    messages: [
+      {"role": "user", "content": `calories of the meal I am about to send. Return ONLY A NUMBER. RETURN 0 IF NOT A FOOD`},
+      {"role": "user", "content": req.body.prompt},
+    ],
+  });
   res.status(201).json(completion.choices[0].message)
 })
 

@@ -124,6 +124,7 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     marginRight: '10px',
+    color: 'black'
   },
   button: {
     padding: '8px 16px',
