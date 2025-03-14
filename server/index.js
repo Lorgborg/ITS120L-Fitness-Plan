@@ -113,8 +113,8 @@ app.post("/api/getResponse", async (req, res) => {
     model: "gpt-4o-mini",
     store: true,
     messages: [
-      {"role": "user", "content": `My name is ${user.username}, My weight is currently ${user.weight} kgs and I would like to achieve a weight of ${user.idealWeight} and I live in ${user.nationality}. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality.`},
-      {"role": "user", "content": `Remember all my personal information when I ask the next prompts`},
+      {"role": "user", "content": `My name is ${user.username}, My weight is currently ${user.weight} kgs. I am ${user.age}, my height is ${user.height} and I would like to achieve a weight of ${user.idealWeight} and I live in ${user.nationality}. I want to have a daily caloric intake of ${user.dailyIntake} calories. If what I'm doing is not good for my targetted weight, please advice me otherwise. please advice me but only when I'm asking for fitness-related advice. Keep the answers short, friendly, consice and take into account my nationality.`},
+      {"role": "user", "content": `Remember all my personal information when I ask the next prompts. Respond with no formatting, essay format and personal`},
       {"role": "user", "content": req.body.prompt},
     ],
   });

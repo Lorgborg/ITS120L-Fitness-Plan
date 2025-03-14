@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import Chat from './chat.jsx';
 import Popup from "./popup.jsx";
 import { useLocation } from "react-router-dom";
@@ -56,17 +56,24 @@ function Home() {
 
    return (
       <>
-         <h1>Hello there {user ? user.username : ''}</h1>
-         <form method="post" onSubmit="http://localhost:8080/api/">
-            <input name="prompt" type="text" placeholder="Input meal here" />
-            <input type="submit" value="Submit" />
-         </form>
-         <Popup trigger={popup}>
-            <h1>test</h1>
-         </Popup>
-         <div>
+      {
+         (user != null) ? 
+         <>
+            <h1>Hello there {user ? user.username : ''}</h1>
+            <form method="post" onSubmit="http://localhost:8080/api/">
+               <input name="prompt" type="text" placeholder="Input meal here" />
+               <input type="submit" value="Submit" />
+            </form>
+            <p>Daily Calorie Intake: {user.dailyIntake}</p>
+            <Popup trigger={popup}>
+               <h1>test</h1>
+            </Popup>
             <Chat user={user}></Chat>
-         </div>
+         </> :
+         <p>not signed in</p>
+         
+      }
+         
       </>
    );
 }
