@@ -33,7 +33,7 @@ const handleSuccess = async (credentialResponse) => {
    }
 }
    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
+      <div className="h-screen w-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
          <Helmet>
             <title>MyFit - Login</title>
             <meta name="description" content="Login to MyFit - Track your calories and reach your fitness goals" />

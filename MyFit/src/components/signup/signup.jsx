@@ -53,7 +53,7 @@ function Signup() {
    };
 
    return (
-      <div className="min-h-screen w-full flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
+      <div className="min-h-screen w-screen flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
          <Helmet>
             <title>MyFit - Create Account</title>
             <meta name="description" content="Sign up for MyFit - Your personal diet and calorie tracker" />
@@ -62,7 +62,7 @@ function Signup() {
             <meta property="og:description" content="Create your account to track calories, plan your diet, and reach your weight goals" />
          </Helmet>
          
-         <div className="w-full max-w-4xl flex overflow-hidden rounded-lg shadow-xl">
+         <div className="w-full max-w-3xl flex overflow-hidden rounded-lg shadow-xl">
             {/* Left Panel */}
             <div className="hidden md:flex md:w-1/2 bg-[#A31D1D] text-white flex-col justify-center items-center p-10">
                <h1 className="text-4xl font-bold mb-4">MyFit</h1>
