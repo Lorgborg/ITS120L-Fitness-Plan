@@ -10,7 +10,7 @@ function Home() {
 
   return (
     
-    <div className="min-h-screen w-screen bg-[#FEF9E1]">
+    <div className="min-h-full w-full bg-[#FEF9E1]">
        <title>YouFit - Home</title>
 
       {/* Header */}
