@@ -153,7 +153,7 @@ function Home() {
                   <input type="submit" value="Add meal" />
                </form>
             </Popup>
-            <Chat user={user}></Chat>
+            <Chat user={user} calorieToday={calorieToday}></Chat>
          </> :
          <p>Loading...</p>
          
