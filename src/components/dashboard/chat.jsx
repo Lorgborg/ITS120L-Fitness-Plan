@@ -57,62 +57,66 @@ const Chat = (props) => {
   }, [messages]);
 
   return (
-    <div style={styles.chatContainer}>
-      <div style={styles.messagesContainer}>
-        {messages.map((message, i) => (
-          <div
-            key={i}
-            style={{
-              ...styles.message,
-              alignSelf: message.role === 'user' ? 'flex-end' : 'flex-start',
-              backgroundColor: message.role === 'user' ? '#007bff' : '#f1f1f1',
-              color: message.role === 'user' ? '#fff' : '#000',
-            }}
-          >
-            <strong>{message.role === 'user' ? 'You' : 'Assistant'}:</strong> {message.content}
-          </div>
-        ))}
-        {loading && <div style={styles.message}>Loading...</div>}
-        <div ref={messagesEndRef} />
+    <div className="flex flex-col items-center justify-center w-[800px] h-[600px] bg-[#FFD6B5] rounded-lg shadow-lg p-6">
+    {/* Logo at the top */}
+    <img src="/MyFitt.png" alt="MyFitLogo" className="w-15 h-15 mb-3 mt-[-15px]" />
+    
+    {/* Welcome Message (disappears after first message) */}
+    {messages.length === 0 && (
+      <div className="text-center text-gray-800">
+        <p className="text-lg text-gray-400 font-medium">Hi, there!</p>
+        <p className="text-xl font-semibold">How may I assist you?</p>
       </div>
+    )}
 
-      {/* Input form */}
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <div className='text-gray-600'> 
-        <input
-          type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          placeholder="Type your message..."
-          style={styles.input}
-          disabled={loading} // Disable input while loading
-        /></div>
-        <button type="submit" style={styles.button} disabled={loading}>
-          Send
-        </button>
-      </form>
+    {/* Messages Container */}
+    <div className="flex flex-col w-full h-[350px] overflow-y-auto px-4 py-2">
+      {messages.map((message, i) => (
+        <div
+          key={i}
+          className={`px-4 py-2 mb-3 rounded-lg max-w-[60%] ${
+            message.role === 'user' 
+              ? 'bg-[#F07167] text-white self-end' 
+              : 'bg-[#0081A7] text-white self-start'
+          }`}
+        >
+          {message.content}
+        </div>
+      ))}
+      {loading && <div className="text-gray-600">Loading...</div>}
+      <div ref={messagesEndRef} />
     </div>
+
+    {/* Input Field & Send Button */}
+    <form onSubmit={handleSubmit} className="flex items-center w-full mt-4 gap-2">
+      <input
+        type="text"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        placeholder="Talk to assistant..."
+        disabled={loading}
+        className="w-full px-4 py-3 text-gray-700 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-400"
+      />
+      <button type="submit" disabled={loading} className="p-2 border-none bg-transparent">
+        <img src="/arrow-submit.png" alt="Send" className="w-20 h-12 object-contain" />
+      </button>
+    </form>
+  </div>
+
   );
+  
 };
 
 const styles = {
-  chatContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '500px',
-    width: '400px',
-    border: '1px solid #ccc',
-    borderRadius: '8px',
-    overflow: 'hidden',
-  },
-  messagesContainer: {
-    flex: 1,
-    overflowY: 'auto',
-    padding: '10px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-  },
+
+  // messagesContainer: {
+  //   flex: 1,
+  //   overflowY: 'auto',
+  //   padding: '10px',
+  //   display: 'flex',
+  //   flexDirection: 'column',
+  //   gap: '10px',
+  // },
   message: {
     padding: '8px',
     borderRadius: '8px',
@@ -130,15 +134,7 @@ const styles = {
     borderRadius: '4px',
     border: '1px solid #ccc',
     marginRight: '10px',
-  },
-  button: {
-    padding: '8px 16px',
-    borderRadius: '4px',
-    border: 'none',
-    backgroundColor: '#007bff',
-    color: '#fff',
-    cursor: 'pointer',
-  },
+  }
 };
 
 export default Chat;

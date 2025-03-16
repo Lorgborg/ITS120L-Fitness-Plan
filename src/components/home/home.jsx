@@ -23,12 +23,12 @@ function Home() {
         <div className="flex space-x-12">
         <div className="flex space-x-12">
   <img 
-    src="/public/lorgborg profile.jpg" 
+    src="/lorgborg profile.jpg" 
     alt="Lorgborg" 
     className="w-28 h-28 rounded-full object-cover shadow-lg transition-all duration-500 ease-in-out hover:scale-110"
   />
   <img 
-    src="/public/catto profile.jpg" 
+    src="/catto profile.jpg" 
     alt="Chewii29" 
     className="w-28 h-28 rounded-full object-cover shadow-lg transition-all duration-500 ease-in-out hover:scale-110"
   />
