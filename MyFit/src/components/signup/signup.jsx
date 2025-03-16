@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 function Signup() {
    const navigate = useNavigate();
    const location = useLocation();
-   
+
    const [formData, setFormData] = useState({
       username: '',
       weight: '',
@@ -15,17 +15,17 @@ function Signup() {
       age: '',
       time: '',
    });
-   
+
    const handleChange = (e) => {
       setFormData({
          ...formData,
          [e.target.name]: e.target.value
       });
    };
-   
+
    const handleSubmit = async (e) => {
       e.preventDefault();
-   
+
       const email = location.state?.email || '';
 
       const res = await fetch("http://localhost:8080/api/signup", {
@@ -45,7 +45,7 @@ function Signup() {
             time: formData.time,
          }),
       });
-      
+
       if(res.status === 200) {
          console.log("Account created successfully");
          navigate('../dashboard', {state: { email: email, name: formData.name } });
@@ -53,15 +53,15 @@ function Signup() {
    };
 
    return (
-      <div className="min-h-screen w-screen flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
+      <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-[#FEF9E1] overflow-hidden">
          <Helmet>
-            <title>YouFit - Create Account</title>
+            <title>MyFit - Create Account</title>
             <meta name="description" content="Sign up for YouFit - Your personal diet and calorie tracker" />
             <meta name="keywords" content="fitness, diet, calorie tracking, weight management, signup" />
             <meta property="og:title" content="Join YouFit - Start Your Health Journey" />
             <meta property="og:description" content="Create your account to track calories, plan your diet, and reach your weight goals" />
          </Helmet>
-         
+
          <div className="w-full max-w-3xl flex overflow-hidden rounded-lg shadow-xl">
             {/* Left Panel */}
             <div className="hidden md:flex md:w-1/2 bg-[#A31D1D] text-white flex-col justify-center items-center p-10">
@@ -75,7 +75,7 @@ function Signup() {
                   </div>
                   <div className="flex items-start">
                      <div className="mr-2 mt-1 text-2xl">✓</div>
-                     <p>Get personalized diet recommendations</p>
+                     <p>Get personal diet recommendations</p>
                   </div>
                   <div className="flex items-start">
                      <div className="mr-2 mt-1 text-2xl">✓</div>
@@ -83,101 +83,101 @@ function Signup() {
                   </div>
                </div>
             </div>
-            
+
             {/* Right Panel */}
-            <div className="w-full md:w-1/2 bg-white p-8 md:p-12">
+            <div className="w-screen md:w-1/2 bg-white p-8 md:p-12">
                <div className="md:hidden text-center mb-8">
                   <h1 className="text-3xl font-bold text-[#A31D1D]">YouFit</h1>
                   <p className="text-[#6D2323]">Start your health journey today</p>
                </div>
-               
+
                <h2 className="text-2xl font-bold text-[#6D2323] mb-2">Create Your Account</h2>
                <p className="text-gray-600 mb-6">Join YouFit and start tracking your nutrition</p>
-               
+
                <form onSubmit={handleSubmit} className="mb-6">
                   <div className="mb-4">
                      <label htmlFor="username" className="block text-[#6D2323] font-medium mb-1">Username</label>
-                     <input 
-                        type="text" 
+                     <input
+                        type="text"
                         id="username"
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
-                        required 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
                      />
                   </div>
-                  
+
                   <div className="mb-4">
                      <label htmlFor="weight" className="block text-[#6D2323] font-medium mb-1">Weight</label>
-                     <input 
+                     <input
                         type="text"
                         id="weight"
                         name="weight"
                         value={formData.weight}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
-                        required 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
                      />
                   </div>
 
                   <div className="mb-4">
                      <label htmlFor="time" className="block text-[#6D2323] font-medium mb-1">Achieve By: </label>
-                     <input 
+                     <input
                         type="date"
                         id="time"
                         name="time"
                         value={formData.time}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
-                        required 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
                      />
                   </div>
-                  
+
                   <div className="mb-4">
                      <label htmlFor="height" className="block text-[#6D2323] font-medium mb-1">Height</label>
-                     <input 
-                        type="number" 
+                     <input
+                        type="number"
                         id="height"
                         name="height"
                         value={formData.height}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
                         required
                      />
                   </div>
 
                   <div className="mb-4">
                      <label htmlFor="age" className="block text-[#6D2323] font-medium mb-1">Age</label>
-                     <input 
-                        type="number" 
+                     <input
+                        type="number"
                         id="age"
                         name="age"
                         value={formData.age}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
                         required
                      />
                   </div>
 
                   <div className="mb-4">
                      <label htmlFor="idealWeight" className="block text-[#6D2323] font-medium mb-1">Ideal Weight</label>
-                     <input 
-                        type="text" 
+                     <input
+                        type="text"
                         id="idealWeight"
                         name="idealWeight"
                         value={formData.idealWeight}
                         onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]" 
-                        required 
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
                      />
                   </div>
-                  
+
                   <div className="mb-6">
                      <label htmlFor="nationality" className="block text-[#6D2323] font-medium mb-1">Nationality</label>
-                     <select 
+                     <select
                         id="nationality"
-                        name="nationality" 
+                        name="nationality"
                         value={formData.nationality}
                         onChange={handleChange}
                         className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
@@ -431,8 +431,8 @@ function Signup() {
                      </select>
                   </div>
 
-                  <button 
-                     type="submit" 
+                  <button
+                     type="submit"
                      className="w-full bg-[#A31D1D] text-white py-2 rounded hover:bg-[#6D2323] transition-colors"
                   >
                      Complete Profile

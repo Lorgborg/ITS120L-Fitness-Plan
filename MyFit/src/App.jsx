@@ -9,6 +9,7 @@ import './App.css'
 function App() {
 
   return (
+    <div ClassName="h-screen w-screen bg-[#FEF9E1]">
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
+    </div>
   )
 }
 
