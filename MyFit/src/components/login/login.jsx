@@ -35,7 +35,7 @@ const handleSuccess = async (credentialResponse) => {
    return (
       <div className="h-screen w-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
          <Helmet>
-            <title>MyFit - Login</title>
+            <title>YouFit - Login</title>
             <meta name="description" content="Login to MyFit - Track your calories and reach your fitness goals" />
             <meta name="keywords" content="fitness, diet, calorie tracking, weight management" />
             <meta property="og:title" content="MyFit - Your Personal Diet & Calorie Tracker" />
@@ -51,12 +51,12 @@ const handleSuccess = async (credentialResponse) => {
             <div className="w-5/12 bg-[#A31D1D] text-white flex flex-col justify-center p-12 relative">
                <div className="absolute top-8 left-8 flex items-center">
                   <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center mr-2">
-                     <span className="text-[#A31D1D] font-bold">M</span>
+                     <span className="text-[#A31D1D] font-bold">Y</span>
                   </div>
-                  <span className="text-white font-medium">MyFit</span>
+                  <span className="text-white font-medium">YouFit</span>
                </div>
                
-               <h2 className="text-3xl font-bold mb-4">Welcome to MyFit!</h2>
+               <h2 className="text-3xl font-bold mb-4">Welcome to YouFit!</h2>
                <p className="mb-8">Track your calories, plan your diet, and reach your weight goals with our easy-to-use platform</p>
                
                {/* Decorative elements */}
@@ -66,7 +66,7 @@ const handleSuccess = async (credentialResponse) => {
             
             {/* Right Panel */}
             <div className="w-7/12 bg-white p-12 flex flex-col justify-center items-center">
-               <h2 className="text-2xl font-bold text-[#6D2323] text-center mb-6">Sign in to MyFit</h2>
+               <h2 className="text-2xl font-bold text-[#6D2323] text-center mb-6">Sign in to YouFit</h2>
                <p className="text-gray-600 text-center mb-8">Use your Google account to sign in</p>
                
                <div className="mb-8">

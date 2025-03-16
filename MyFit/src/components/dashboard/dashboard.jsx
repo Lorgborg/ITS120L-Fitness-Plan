@@ -55,7 +55,8 @@ function Home() {
    }
 
    return (
-      <>
+
+      <><title>YouFit - Dashboard</title>
       {
          (user != null) ? 
          <>

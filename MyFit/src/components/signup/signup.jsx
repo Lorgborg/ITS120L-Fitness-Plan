@@ -55,17 +55,17 @@ function Signup() {
    return (
       <div className="min-h-screen w-screen flex items-center justify-center bg-[#FEF9E1] overflow-hidden">
          <Helmet>
-            <title>MyFit - Create Account</title>
-            <meta name="description" content="Sign up for MyFit - Your personal diet and calorie tracker" />
+            <title>YouFit - Create Account</title>
+            <meta name="description" content="Sign up for YouFit - Your personal diet and calorie tracker" />
             <meta name="keywords" content="fitness, diet, calorie tracking, weight management, signup" />
-            <meta property="og:title" content="Join MyFit - Start Your Health Journey" />
+            <meta property="og:title" content="Join YouFit - Start Your Health Journey" />
             <meta property="og:description" content="Create your account to track calories, plan your diet, and reach your weight goals" />
          </Helmet>
          
          <div className="w-full max-w-3xl flex overflow-hidden rounded-lg shadow-xl">
             {/* Left Panel */}
             <div className="hidden md:flex md:w-1/2 bg-[#A31D1D] text-white flex-col justify-center items-center p-10">
-               <h1 className="text-4xl font-bold mb-4">MyFit</h1>
+               <h1 className="text-4xl font-bold mb-4">YouFit</h1>
                <p className="text-xl text-center mb-6">Your journey to better health starts here.</p>
                <img src="Yummers.jpg" alt="Healthy Food" className="mb-6 " />
                <div className="space-y-4">
@@ -87,12 +87,12 @@ function Signup() {
             {/* Right Panel */}
             <div className="w-full md:w-1/2 bg-white p-8 md:p-12">
                <div className="md:hidden text-center mb-8">
-                  <h1 className="text-3xl font-bold text-[#A31D1D]">MyFit</h1>
+                  <h1 className="text-3xl font-bold text-[#A31D1D]">YouFit</h1>
                   <p className="text-[#6D2323]">Start your health journey today</p>
                </div>
                
                <h2 className="text-2xl font-bold text-[#6D2323] mb-2">Create Your Account</h2>
-               <p className="text-gray-600 mb-6">Join MyFit and start tracking your nutrition</p>
+               <p className="text-gray-600 mb-6">Join YouFit and start tracking your nutrition</p>
                
                <form onSubmit={handleSubmit} className="mb-6">
                   <div className="mb-4">

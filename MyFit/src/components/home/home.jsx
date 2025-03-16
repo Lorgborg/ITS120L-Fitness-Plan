@@ -9,7 +9,10 @@ function Home() {
   }, []);
 
   return (
+    
     <div className="min-h-screen w-screen bg-[#FEF9E1]">
+       <title>YouFit - Home</title>
+
       {/* Header */}
       <header className="w-full bg-[#A31D1D] text-white p-4 text-center text-lg font-semibold transition-all duration-500 ease-in-out hover:bg-[#8A1818]">
         Homepage
