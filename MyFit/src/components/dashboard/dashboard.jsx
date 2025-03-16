@@ -26,7 +26,7 @@ function Home() {
    }, [mealInfo.calories]);
 
    useEffect(() => {
-      fetch("http://localhost:8080/api/getUser", {
+      fetch("https://myfit-server.vercel.app/api/getUser", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -41,7 +41,7 @@ function Home() {
       })
       .catch(error => console.error('Error fetching user details:', error));
 
-      fetch("http://localhost:8080/api/getMeals", {
+      fetch("https://myfit-server.vercel.app/api/getMeals", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -67,7 +67,7 @@ function Home() {
    const handleSubmit = async (e) => {
       e.preventDefault();
       console.log("fetching meal")
-      const res = await fetch("http://localhost:8080/api/addMeal", {
+      const res = await fetch("https://myfit-server.vercel.app/api/addMeal", {
          method: 'post',
          headers: {
             'Accept': 'application/json',
@@ -97,7 +97,7 @@ function Home() {
       e.preventDefault();
       console.log("fetching meal");
   
-      const res = await fetch("http://localhost:8080/api/saveMeal", {
+      const res = await fetch("https://myfit-server.vercel.app/api/saveMeal", {
           method: 'post',
           headers: {
               'Accept': 'application/json',
@@ -114,7 +114,7 @@ function Home() {
           setPopup(false);
   
           // Fetch updated daily calorie count
-          fetch("http://localhost:8080/api/getMeals", {
+          fetch("https://myfit-server.vercel.app/api/getMeals", {
               method: 'POST',
               headers: {
                   'Accept': 'application/json',

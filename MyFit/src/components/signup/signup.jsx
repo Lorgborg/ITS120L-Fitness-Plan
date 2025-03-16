@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate} from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 function Signup() {
@@ -15,12 +15,31 @@ function Signup() {
       age: '',
       time: '',
    });
+   const [showPopup, setShowPopup] = useState(false);
+   const [dailyCalorie, setDailyCalorie] = useState(false);
+
+   useEffect(() => {
+      const allFieldsFilled = Object.values(formData).every(value => value !== '');
+
+      if (allFieldsFilled) {
+         console.log("All fields are filled! Running code...");
+         // Place your desired code here
+      }
+
+      if (allFieldsFilled) {
+         setShowPopup(true);
+         console.log("All fields are filled! Showing popup...");
+     } else {
+         setShowPopup(false);
+     }
+   }, [formData]);
 
    const handleChange = (e) => {
       setFormData({
          ...formData,
          [e.target.name]: e.target.value
       });
+
    };
 
    const handleSubmit = async (e) => {
@@ -28,7 +47,7 @@ function Signup() {
 
       const email = location.state?.email || '';
 
-      const res = await fetch("http://localhost:8080/api/signup", {
+      const res = await fetch("https://myfit-server.vercel.app/api/signup", {
          method: 'post',
          headers: {
             'Accept': 'application/json',
@@ -439,6 +458,12 @@ function Signup() {
                   </button>
                </form>
             </div>
+            {showPopup && (
+                <div className="popup">
+                    <p>All fields are filled!</p>
+                    <button onClick={() => setShowPopup(false)}>Close</button>
+                </div>
+            )}
          </div>
       </div>
    );

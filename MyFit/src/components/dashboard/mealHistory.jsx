@@ -1,6 +1,6 @@
 import React from "react";
 
-function Popup(props) {
+function MealHistory(props) {
     return (props.trigger) ? (
         <div className="popup">
             <div className="popup-inner">
@@ -11,4 +11,4 @@ function Popup(props) {
     ) : "";
 }
 
-export default Popup
+export default MealHistory
