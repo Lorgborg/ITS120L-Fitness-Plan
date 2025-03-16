@@ -20,7 +20,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
-    "react-router-dom": "^7.2.0"
+    "react-router-dom": "^7.2.0",
+    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
