@@ -10,39 +10,49 @@ function Login() {
    const [email, setEmail] = useState('');
    const [name, setName] = useState('');
    const [animateIn, setAnimateIn] = useState(false);
+   const [credential, setCredential] = useState('');
    
    // Trigger animations after component mounts
    useEffect(() => {
       setAnimateIn(true);
    }, []);
 
+   useEffect(() => {
+      console.log("Setting credential to", credential);
+   }, [credential]);
+
    const handleSuccess = async (credentialResponse) => {
-      console.log("Pulling from https://myfit-server.vercel.app/api/login")
-      const res = await fetch("https://myfit-server.vercel.app/api/login", {
+      setCredential(credentialResponse); // Update state
+
+      console.log("Setting credential...", credentialResponse);
+      console.log("Pulling from http://localhost:8080/api/login");
+
+      const res = await fetch("http://localhost:8080/api/login", {
          method: 'post',
+         credentials: "include",
          headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({ raw: credentialResponse.credential }),
-      })
+      });
+
       if (res.status === 201) {
-         const data = await res.json()
-         const email = data.status.email; // Assuming the response contains the email
+         const data = await res.json();
+         const email = data.status.email;
          const name = data.status.given_name;
          setName(name);
-         setEmail(email); // Set the email state
-         
+         setEmail(email);
+
+         console.log("Navigating with:", { credentialResponse, email, name });
+
          // Add exit animation before navigation
          setAnimateIn(false);
          setTimeout(() => {
-            navigate(data.message, { state: { email, name } }) // Pass the email directly
+            navigate(data.message, { state: { credential: credentialResponse, email, name } });
          }, 500);
-         
-         console.log({ email: email })
-         console.log({ data: data.status.given_name })
       }
-   }
+   };
 
    return (
       <div className="h-screen w-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
@@ -53,28 +63,24 @@ function Login() {
             <meta property="og:title" content="MyFit - Your Personal Diet & Calorie Tracker" />
             <meta property="og:description" content="Track your calories, plan your diet, and reach your weight goals with MyFit" />
          </Helmet>
-         
+
          {/* Animated Background elements with pulsating effect */}
          <div 
             className={`absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#E5D0AC] opacity-50 -mb-32 -ml-32 transition-all duration-1000 ease-in-out ${animateIn ? 'scale-125' : 'scale-75'}`}
-            style={{
-               animation: animateIn ? 'pulse 6s ease-in-out infinite alternate' : 'none'
-            }}
+            style={{ animation: animateIn ? 'pulse 6s ease-in-out infinite alternate' : 'none' }}
          ></div>
          <div 
             className={`absolute top-0 right-0 w-96 h-96 bg-[#A31D1D] opacity-30 -mt-20 -mr-20 transition-all duration-1000 delay-300 ease-in-out ${animateIn ? 'scale-110' : 'scale-90'}`}
-            style={{
-               animation: animateIn ? 'float 8s ease-in-out infinite alternate' : 'none'
-            }}
+            style={{ animation: animateIn ? 'float 8s ease-in-out infinite alternate' : 'none' }}
          ></div>
-         
+
          {/* Main card with entrance animation */}
          <div 
             className={`w-full max-w-4xl flex overflow-hidden rounded-lg shadow-xl z-10 transition-all duration-700 ease-out ${
                animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
          >
-            {/* Left Panel with staggered text animations */}
+            {/* Left Panel */}
             <div className="w-5/12 bg-[#A31D1D] text-white flex flex-col justify-center p-12 relative">
                <div 
                   className={`absolute top-8 left-8 flex items-center transition-all duration-500 delay-300 ${
@@ -86,67 +92,31 @@ function Login() {
                   </div>
                   <span className="text-white font-medium">YouFit</span>
                </div>
-               
-               <h2 
-                  className={`text-3xl font-bold mb-4 transition-all duration-500 delay-500 ${
-                     animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-               >
+
+               <h2 className={`text-3xl font-bold mb-4 transition-all duration-500 delay-500 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   Welcome to YouFit!
                </h2>
-               
-               <p 
-                  className={`mb-8 transition-all duration-500 delay-700 ${
-                     animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-               >
+
+               <p className={`mb-8 transition-all duration-500 delay-700 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   Track your calories, plan your diet, and reach your weight goals with our easy-to-use platform
                </p>
-               
-               {/* Decorative elements with floating animations */}
-               <div 
-                  className="absolute bottom-0 right-0 w-32 h-32 rounded-full bg-[#6D2323] opacity-40 -mb-16 -mr-16"
-                  style={{
-                     animation: animateIn ? 'float 5s ease-in-out infinite alternate' : 'none'
-                  }}
-               ></div>
-               <div 
-                  className="absolute top-24 right-24 w-20 h-20 rounded-full border-4 border-[#FEF9E1] opacity-20"
-                  style={{
-                     animation: animateIn ? 'spin 12s linear infinite' : 'none'
-                  }}
-               ></div>
             </div>
-            
-            {/* Right Panel with staggered content animations */}
+
+            {/* Right Panel */}
             <div className="w-7/12 bg-white p-12 flex flex-col justify-center items-center">
-               <h2 
-                  className={`text-2xl font-bold text-[#6D2323] text-center mb-6 transition-all duration-500 delay-600 ${
-                     animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-               >
+               <h2 className={`text-2xl font-bold text-[#6D2323] text-center mb-6 transition-all duration-500 delay-600 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   Sign in to YouFit
                </h2>
-               
-               <p 
-                  className={`text-gray-600 text-center mb-8 transition-all duration-500 delay-800 ${
-                     animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-               >
+
+               <p className={`text-gray-600 text-center mb-8 transition-all duration-500 delay-800 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   Use your Google account to sign in
                </p>
-               
-               <div 
-                  className={`mb-8 transition-all duration-500 delay-1000 ${
-                     animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-                  }`}
-               >
+
+               <div className={`mb-8 transition-all duration-500 delay-1000 ${animateIn ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
                   <GoogleOAuthProvider clientId="788860631464-5frp9jdepqedqc0fhoprp8n3skl01i05.apps.googleusercontent.com">
                      <GoogleLogin
                         onSuccess={handleSuccess}
-                        onError={() => {
-                           console.log('Login Failed');
-                        }}
+                        onError={() => console.log('Login Failed')}
                         size="large"
                         text="signin_with"
                         shape="rectangular"
@@ -154,31 +124,27 @@ function Login() {
                      />
                   </GoogleOAuthProvider>
                </div>
-               
-               <div 
-                  className={`text-center text-gray-500 text-sm transition-all duration-500 delay-1200 ${
-                     animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                  }`}
-               >
+
+               <div className={`text-center text-gray-500 text-sm transition-all duration-500 delay-1200 ${animateIn ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                   <p>By signing in, you agree to our <a href="#" className="text-[#A31D1D]">Terms of Service</a> and <a href="#" className="text-[#A31D1D]">Privacy Policy</a></p>
                </div>
             </div>
          </div>
-         
-         {/* Add global keyframes for animations */}
+
+         {/* Global keyframes for animations */}
          <style jsx global>{`
             @keyframes pulse {
                0% { transform: scale(1); }
                50% { transform: scale(1.1); }
                100% { transform: scale(1); }
             }
-            
+
             @keyframes float {
                0% { transform: translateY(0) rotate(0deg); }
                50% { transform: translateY(-15px) rotate(5deg); }
                100% { transform: translateY(0) rotate(0deg); }
             }
-            
+
             @keyframes spin {
                from { transform: rotate(0deg); }
                to { transform: rotate(360deg); }

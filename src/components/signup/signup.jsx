@@ -1,27 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
-function Signup() {
-   const navigate = useNavigate();
-   const location = useLocation();
+function calculateDailyCalories(weight, height, age, gender, idealWeight, goalDate) {
+   // Convert dates and get time difference in weeks
+   const oneWeek = 1000 * 60 * 60 * 24 * 7;
+   const startDate = new Date();
+   const endDate = new Date(goalDate);
+   const timeInWeeks = Math.round((endDate - startDate) / oneWeek);
 
+   if (timeInWeeks <= 0) {
+       return "Goal date must be in the future!";
+   }
+
+   // Calculate BMR (Basal Metabolic Rate) using Mifflin-St Jeor Equation
+   let BMR;
+   if (gender === "male") {
+       BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+   } else {
+       BMR = 10 * weight + 6.25 * height - 5 * age - 161;
+   }
+
+   // Calculate TDEE (Total Daily Energy Expenditure)
+   let TDEE = BMR * 1.6; // Default to sedentary if invalid input
+
+   // Calculate total calories needed to gain/lose the weight
+   const weightChange = idealWeight - weight;
+   const totalCaloriesNeeded = weightChange * 7700; // 1 kg = 7700 kcal
+
+   // Daily calorie surplus/deficit
+   const dailyCalorieChange = totalCaloriesNeeded / (timeInWeeks * 7); // Spread over time
+
+   // Final daily intake to reach goal
+   const dailyCalorieIntake = TDEE + dailyCalorieChange;
+
+   return {
+       weeksUntilGoal: timeInWeeks,
+       BMR: Math.round(BMR),
+       TDEE: Math.round(TDEE),
+       dailyCalorieIntake: Math.round(dailyCalorieIntake)
+   };
+}
+
+function Signup() {
+   const location = useLocation();
+   const navigate = useNavigate();
+
+   const credentialResponse = location.state?.credential || '';
    const [formData, setFormData] = useState({
       username: '',
       weight: '',
       height: '',
+      sex: 'Male',
       idealWeight: '',
       nationality: '',
       age: '',
       time: '',
    });
    const [showPopup, setShowPopup] = useState(false);
-   const [dailyCalorie, setDailyCalorie] = useState(false);
+   const [dailyCalorie, setDailyCalorie] = useState(0);
 
    useEffect(() => {
       const allFieldsFilled = Object.values(formData).every(value => value !== '');
-
       if (allFieldsFilled) {
+         const result = calculateDailyCalories(formData.weight, formData.height, formData.age, formData.sex, formData.idealWeight, new Date(formData.time).toISOString().split("T")[0]);
+         setDailyCalorie(result.dailyCalorieIntake);
+         console.log(dailyCalorie)
          console.log("All fields are filled! Running code...");
          // Place your desired code here
       }
@@ -35,6 +79,7 @@ function Signup() {
    }, [formData]);
 
    const handleChange = (e) => {
+      console.log(e.target.value)
       setFormData({
          ...formData,
          [e.target.name]: e.target.value
@@ -47,7 +92,7 @@ function Signup() {
 
       const email = location.state?.email || '';
 
-      const res = await fetch("https://myfit-server.vercel.app/api/signup", {
+      const res = await fetch("http://localhost:8080/api/signup", {
          method: 'post',
          headers: {
             'Accept': 'application/json',
@@ -59,6 +104,7 @@ function Signup() {
             weight: formData.weight,
             height: formData.height,
             age: formData.age,
+            sex: formData.sex,
             nationality: formData.nationality,
             idealWeight: formData.idealWeight,
             time: formData.time,
@@ -67,7 +113,19 @@ function Signup() {
 
       if(res.status === 200) {
          console.log("Account created successfully");
-         navigate('../dashboard', {state: { email: email, name: formData.name } });
+         console.log(credentialResponse)
+         const res = await fetch("http://localhost:8080/api/login", {
+            method: 'post',
+            credentials: "include",
+            headers: {
+               'Accept': 'application/json',
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ raw: credentialResponse.credential, email: email }),
+         })
+         if(res.status == 201){
+            navigate('../dashboard')
+         }
       }
    };
 
@@ -141,19 +199,6 @@ function Signup() {
                   </div>
 
                   <div className="mb-4">
-                     <label htmlFor="time" className="block text-[#6D2323] font-medium mb-1">Achieve By: </label>
-                     <input
-                        type="date"
-                        id="time"
-                        name="time"
-                        value={formData.time}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
-                        required
-                     />
-                  </div>
-
-                  <div className="mb-4">
                      <label htmlFor="height" className="block text-[#6D2323] font-medium mb-1">Height</label>
                      <input
                         type="number"
@@ -180,12 +225,41 @@ function Signup() {
                   </div>
 
                   <div className="mb-4">
+                     <label htmlFor="sex" className="block text-[#6D2323] font-medium mb-1">Sex</label>
+                     <select
+                        type="select"
+                        id="sex"
+                        name="sex"
+                        value={formData.sex}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
+                     >
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                     </select>
+                  </div>
+
+                  <div className="mb-4">
                      <label htmlFor="idealWeight" className="block text-[#6D2323] font-medium mb-1">Ideal Weight</label>
                      <input
                         type="text"
                         id="idealWeight"
                         name="idealWeight"
                         value={formData.idealWeight}
+                        onChange={handleChange}
+                        className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
+                        required
+                     />
+                  </div>
+
+                  <div className="mb-4">
+                     <label htmlFor="time" className="block text-[#6D2323] font-medium mb-1">Achieve By: </label>
+                     <input
+                        type="date"
+                        id="time"
+                        name="time"
+                        value={formData.time}
                         onChange={handleChange}
                         className="w-full px-4 py-2 border text-gray-500 border-[#E5D0AC] rounded focus:outline-none focus:border-[#A31D1D]"
                         required
@@ -458,13 +532,13 @@ function Signup() {
                   </button>
                </form>
             </div>
-            {showPopup && (
+         </div>
+         {showPopup && (
                 <div className="popup">
-                    <p>All fields are filled!</p>
+                    <p style={{"color": "black"}}>This is the daily Calories you must meet with these settings: {dailyCalorie}</p>
                     <button onClick={() => setShowPopup(false)}>Close</button>
                 </div>
             )}
-         </div>
       </div>
    );
 }
