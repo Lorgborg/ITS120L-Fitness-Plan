@@ -8,6 +8,7 @@ function Home() {
    const email = location.state?.email || '';
    const [user, setUser] = useState(null);
    const [popup, setPopup] = useState(false);
+   const [mealInfo, setMealInfo] = useState({});
    const [meal, setMeal] = useState(null);
 
    useEffect(() => {
@@ -37,15 +38,17 @@ function Home() {
       console.log(meal);
    };
 
-   const handleSubmit = async () => {
+   const handleSubmit = async (e) => {
+      e.preventDefault();
       console.log("fetching meal")
-      const res = await fetch("http://localhost:8080/api", {
+      const res = await fetch("http://localhost:8080/api/addMeal", {
          method: 'post',
          headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
+            email: email,
             prompt: meal
          }),
       });
@@ -54,6 +57,9 @@ function Home() {
 
       if(res.status == 201) {
          setPopup(true);
+         const data = await res.json()
+         setMealInfo({name: meal, calories: data.content})
+         console.log(meal)
       }
    }
 
@@ -69,8 +75,9 @@ function Home() {
                <input type="submit" value="Submit" />
             </form>
             <p>Daily Calorie Intake: {user.dailyIntake} calories</p>
-            <Popup trigger={popup}>
-               <h1>test</h1>
+            <Popup trigger={popup} mealInfo={mealInfo} setTrigger={setPopup}>
+               <h1>{mealInfo.name}</h1>
+               <h1>{mealInfo.calories}</h1>
             </Popup>
             <Chat user={user}></Chat>
          </> :
