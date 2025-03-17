@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import Chat from './chat.jsx';
 import Popup from "./popup.jsx";
 import { useNavigate } from 'react-router-dom';
+import { BarChart } from "@mui/x-charts";
+
+const getPHTDate = () => {
+   const now = new Date();
+   return new Date(now.getTime() + 8 * 3600000);
+};
 
 function Home() {
    const navigate = useNavigate();
@@ -12,30 +18,27 @@ function Home() {
    const [meal, setMeal] = useState("");
    const [calorie, setCalorie] = useState(0);
    const [calorieToday, setCalorieToday] = useState(0);
+   const [loading, setLoading] = useState(true);
+   const [weekMeals, setWeekMeals] = useState({});
 
-   // ✅ Step 1: Fetch profile data and set mail
    useEffect(() => {
       fetch('http://localhost:8080/api/profile', {
          method: 'POST',
-         credentials: 'include' // Include session cookies
+         credentials: 'include'
       })
       .then(response => response.json())
       .then(data => {
          if (data.message === 'Profile data') {
-            console.log("User session:", data);
             setMail(data.user.email);
          }
       })
       .catch(error => console.error('Error fetching profile:', error));
    }, []);
 
-   // ✅ Step 2: Fetch user details and meals *after* mail is set
    useEffect(() => {
       if (!mail) return;
+      setLoading(true);
 
-      console.log("Fetching data for:", mail);
-
-      // Fetch user details
       fetch("http://localhost:8080/api/getUser", {
          method: 'POST',
          headers: {
@@ -47,38 +50,49 @@ function Home() {
       .then(response => response.json())
       .then(data => {
          setUser(data);
-         console.log("User data:", data);
       })
       .catch(error => console.error('Error fetching user details:', error));
 
-      // Fetch meals for today
+      fetch("http://localhost:8080/api/getWeekMeals", {
+         method: 'POST',
+         headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ email: mail }),
+      })
+      .then(response => response.json())
+      .then(data => {
+         setWeekMeals(data)
+      })
+
       fetch("http://localhost:8080/api/getMeals", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
          },
-         body: JSON.stringify({ email: mail, date: new Date().toISOString().split("T")[0] }),
+         body: JSON.stringify({ email: mail, date: getPHTDate().toISOString().split("T")[0] }),
       })
       .then(response => response.json())
       .then(data => {
          const totalCalories = data.reduce((sum, meal) => sum + parseInt(meal.calories, 10), 0);
+         console.log(totalCalories)
          setCalorieToday(totalCalories);
-         console.log("Today's total calories:", totalCalories);
+         setLoading(false);
       })
-      .catch(error => console.error('Error fetching meals:', error));
+      .catch(error => {
+         console.error('Error fetching meals:', error);
+         setLoading(false);
+      });
    }, [mail]);
 
-   // Handle meal input change
    const handleChange = (e) => {
       setMeal(e.target.value);
    };
 
-   // ✅ Step 3: Fetch meal details
    const handleSubmit = async (e) => {
       e.preventDefault();
-      console.log("Fetching meal info...");
-
       const res = await fetch("http://localhost:8080/api/addMeal", {
          method: 'POST',
          headers: {
@@ -92,20 +106,16 @@ function Home() {
          setPopup(true);
          const data = await res.json();
          setMealInfo({ name: meal, calories: data.content });
-         console.log("Meal info:", mealInfo);
       }
    };
 
-   // Handle manual calorie input
    const handleCalories = (e) => {
       setCalorie(e.target.value);
    };
 
-   // ✅ Step 4: Save meal to database
    const submitFood = async (e) => {
+      console.log(calorie)
       e.preventDefault();
-      console.log("Saving meal...");
-
       const res = await fetch("http://localhost:8080/api/saveMeal", {
          method: 'POST',
          headers: {
@@ -113,35 +123,31 @@ function Home() {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            email: user?.mail, // Ensure mail is set
+            email: user?.email,
             meal: meal,
-            calories: calorie
+            calories: (calorie == 0) ? mealInfo.calories : calorie
          }),
       });
 
       if (res.status === 201) {
          setPopup(false);
-
-         // Fetch updated daily calorie count
          fetch("http://localhost:8080/api/getMeals", {
             method: 'POST',
             headers: {
                'Accept': 'application/json',
                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email: mail, date: new Date().toISOString().split("T")[0] }),
+            body: JSON.stringify({ email: mail, date: getPHTDate().toISOString().split("T")[0] }),
          })
          .then(response => response.json())
          .then(data => {
             const totalCalories = data.reduce((sum, meal) => sum + parseInt(meal.calories, 10), 0);
             setCalorieToday(totalCalories);
-            console.log("Updated calorie count:", totalCalories);
          })
          .catch(error => console.error('Error fetching updated calorie count:', error));
       }
    };
 
-   // ✅ Step 5: Logout user
    const handleLogout = async (e) => {
       e.preventDefault();
       const res = await fetch("http://localhost:8080/api/logout", {
@@ -157,8 +163,7 @@ function Home() {
       localStorage.removeItem("user");
 
       if (res.status === 201) {
-         console.log("Logged out successfully");
-         navigate('/home')
+         navigate('/home');
       }
    };
 
@@ -166,6 +171,8 @@ function Home() {
       <>
          <title>YouFit - Dashboard</title>
          {
+            loading ? 
+            <div className="loading-spinner">Loading...</div> :
             user ? 
             <>
                <h1>Hello there, {user.username}!</h1>
@@ -175,7 +182,6 @@ function Home() {
                </form>
                <p>Daily Calorie Intake: {calorieToday}/{user.dailyIntake} calories</p>
                <progress value={calorieToday} max={user.dailyIntake}></progress>
-
                <Popup trigger={popup} mealInfo={mealInfo} setTrigger={setPopup}>
                   <form onSubmit={submitFood}>
                      <input type="hidden" name="meal" value={mealInfo.name} />
@@ -184,11 +190,29 @@ function Home() {
                      <input type="submit" value="Add meal" />
                   </form>
                </Popup>
-
                <Chat user={user} calorieToday={calorieToday} />
+               <BarChart
+                  xAxis={[
+                     {
+                        id: 'barCategories',
+                        data: Object.keys(weekMeals).map(date => {
+                           const day = new Date(date).toLocaleDateString("en-US", { weekday: "long" });
+                           return day;
+                       }),
+                        scaleType: 'band',
+                     },
+                  ]}
+                  series={[
+                     {
+                        data: Object.values(weekMeals),
+                     },
+                  ]}
+                  width={500}
+                  height={300}
+               />
                <button onClick={handleLogout} className="logout">Logout</button>
-            </>
-            : <p>You are not Signed in <a href="../login">sign in here</a></p>
+            </> : 
+            <p>You are not Signed in <a href="../login">sign in here</a></p>
          }
       </>
    );
