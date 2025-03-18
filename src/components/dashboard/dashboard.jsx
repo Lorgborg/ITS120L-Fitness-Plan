@@ -299,7 +299,7 @@ function Home() {
          
          {loading ? (
             <LoadingAnimation />
-         ) : loggedIn ? (
+         ) : user ? (
             <motion.div 
               className="max-w-6xl mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
               initial={{ opacity: 0, y: 20 }}
