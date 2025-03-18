@@ -237,6 +237,7 @@ function Home() {
       if (res.status === 201) {
          setPopup(true);
          const data = await res.json();
+         console.log("Sent " + meal)
          setMealInfo({ name: meal, calories: data.content });
       }
    };
@@ -300,20 +301,20 @@ function Home() {
    };
 
    return (
-      <div className="min-h-screen w-full flex bg-[#FDFCDC] p-5 relative overflow-hidden">
-         <title>YouFit - Dashboard</title>
+   <div className="h-screen w-full flex flex-col bg-[#FDFCDC] p-5 relative overflow-hidden">
+      <title>YouFit - Dashboard</title>
          <BackgroundShapes />
          
          {loading ? (
             <div className="flex justify-center items-center h-screen w-full">
             <LoadingAnimation />
             </div>
-         ) : loggedIn ? (
+         ) : (loggedIn && user != null) ? (
             <motion.div 
-              className="max-w-6xl mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+               className="flex flex-col flex-1 w-full max-w-6xl min-h-0 max-h-screen mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ duration: 0.5 }}
             >
                {/* Header */}
                <motion.div 
@@ -373,7 +374,7 @@ function Home() {
                   
                   {/* Right sidebar */}
                   <motion.div 
-                    className="w-full min-h-screen md:w-80 bg-[#FDFCDC] p-4"
+                    className="w-full h-full md:w-80 bg-[#FDFCDC] p-4 overflow-hidden flex-shrink-0"
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
