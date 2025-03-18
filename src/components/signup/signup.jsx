@@ -533,12 +533,52 @@ function Signup() {
                </form>
             </div>
          </div>
+
          {showPopup && (
-                <div className="popup">
-                    <p style={{"color": "black"}}>This is the daily Calories you must meet with these settings: {dailyCalorie}</p>
-                    <button onClick={() => setShowPopup(false)}>Close</button>
-                </div>
-            )}
+         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="w-full max-w-md p-6 rounded-lg shadow-lg" style={{ backgroundColor: '#FEF9E1' }}>
+               <div className="mb-4" style={{ backgroundColor: '#A31D1D', padding: '1rem', borderRadius: '0.5rem' }}>
+               <h2 className="text-xl font-bold text-white text-center">YouFit Nutrition Plan</h2>
+               </div>
+               
+               <div className="mb-6 text-center">
+               <p className="text-lg font-medium mb-2">Your Daily Calorie Target</p>
+               <div className="text-3xl font-bold py-4" style={{ color: '#A31D1D' }}>
+                  {dailyCalorie} calories
+               </div>
+               <p className="text-sm text-gray-600 mt-2">
+                  Based on your profile information and goals
+               </p>
+               </div>
+               
+               <div className="mb-4 p-4 bg-white rounded border border-gray-200">
+               <h3 className="font-medium mb-2">Recommended Macros:</h3>
+               <div className="grid grid-cols-3 gap-2 text-center">
+                  <div>
+                     <p className="font-bold" style={{ color: '#6D2323' }}>Protein</p>
+                     <p>{Math.round(dailyCalorie * 0.3 / 4)}g</p>
+                  </div>
+                  <div>
+                     <p className="font-bold" style={{ color: '#6D2323' }}>Carbs</p>
+                     <p>{Math.round(dailyCalorie * 0.4 / 4)}g</p>
+                  </div>
+                  <div>
+                     <p className="font-bold" style={{ color: '#6D2323' }}>Fat</p>
+                     <p>{Math.round(dailyCalorie * 0.3 / 9)}g</p>
+                  </div>
+               </div>
+               </div>
+               
+               <button
+               className="w-full py-3 px-4 rounded font-bold text-white"
+               style={{ backgroundColor: '#6D2323' }}
+               onClick={() => setShowPopup(false)}
+               >
+               Close
+               </button>
+            </div>
+         </div>
+         )}
       </div>
    );
 }
