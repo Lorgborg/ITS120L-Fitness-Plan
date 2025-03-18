@@ -305,7 +305,9 @@ function Home() {
          <BackgroundShapes />
          
          {loading ? (
+            <div className="flex justify-center items-center h-screen w-full">
             <LoadingAnimation />
+            </div>
          ) : loggedIn ? (
             <motion.div 
               className="max-w-6xl mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
