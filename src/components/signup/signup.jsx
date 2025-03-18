@@ -535,7 +535,7 @@ function Signup() {
          </div>
 
          {showPopup && (
-         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+         <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm bg-black/30 z-50">
             <div className="w-full max-w-md p-6 rounded-lg shadow-lg" style={{ backgroundColor: '#FEF9E1' }}>
                <div className="mb-4" style={{ backgroundColor: '#A31D1D', padding: '1rem', borderRadius: '0.5rem' }}>
                <h2 className="text-xl font-bold text-white text-center">YouFit Nutrition Plan</h2>
