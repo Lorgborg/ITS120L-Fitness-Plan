@@ -66,22 +66,22 @@ function Home() {
       {
         title: "Reliable & Simple Nutrition Tracking",
         description: "Our app helps you track your daily caloric intake with clear, accurate recommendations. Just enter your weight, height, age, and target weight, and we’ll generate a personalized daily goal to keep you on track.",
-        image: "https://cdn-icons-png.flaticon.com/128/2920/2920320.png",
+        image: "cellphone-svgrepo-com.svg",
       },
       {
         title: "Personalized Goal Setting",
         description: "Easily adjust your weight goals and update your details anytime. Your daily calorie target will automatically adapt, and a visual progress tracker helps you stay motivated.",
-        image: "https://cdn-icons-png.flaticon.com/128/3039/3039365.png",
+        image: "goal-svgrepo-com.svg",
       },
       {
         title: "Easy Meal Logging",
         description: "Manually input meals or use our chatbot for quick calorie estimates. Save frequent meals for faster logging and keep your diet tracking hassle-free.",
-        image: "https://cdn-icons-png.flaticon.com/128/3514/3514491.png",
+        image: "meal-svgrepo-com.svg",
       },
       {
         title: "User-Friendly & Efficient",
         description: "Built with the MERN stack, our app offers a smooth and interactive experience. Sign up, log in, and manage your data effortlessly while staying focused on your fitness journey.",
-        image: "https://cdn-icons-png.flaticon.com/128/1170/1170678.png",
+        image: "user-heart-alt-1-svgrepo-com.svg",
       },
     ].map((goal, index) => (
       <div 
