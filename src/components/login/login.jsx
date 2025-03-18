@@ -25,9 +25,9 @@ function Login() {
       setCredential(credentialResponse); // Update state
 
       console.log("Setting credential...", credentialResponse);
-      console.log("Pulling from http://localhost:8080/api/login");
+      console.log("Pulling from https://myfit-server.vercel.app/api/login");
 
-      const res = await fetch("http://localhost:8080/api/login", {
+      const res = await fetch("https://myfit-server.vercel.app/api/login", {
          method: 'post',
          credentials: "include",
          headers: {

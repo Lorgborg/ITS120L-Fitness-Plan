@@ -103,9 +103,9 @@ function Home() {
    const [calorieToday, setCalorieToday] = useState(0);
    const [loading, setLoading] = useState(true);
    const [weekMeals, setWeekMeals] = useState({});
-   // eslint-disable-next-line no-unused-vars
    const [animateIn, setAnimateIn] = useState(false);
    const [chartLoaded, setChartLoaded] = useState(false);
+   const [loggedIn, setLoggedIn] = useState(false);
 
    // Animation variants for staggered animations
    const containerVariants = {
@@ -167,7 +167,14 @@ function Home() {
       })
       .then(response => response.json())
       .then(data => {
-         setUser(data);
+         if(data.status  != 201 ){
+            setLoggedIn(false);
+            setLoading(false);
+         } else {
+            setLoggedIn(true);
+            setUser(data);
+         }
+         
       })
       .catch(error => console.error('Error fetching user details:', error));
 
@@ -292,7 +299,7 @@ function Home() {
          
          {loading ? (
             <LoadingAnimation />
-         ) : user ? (
+         ) : loggedIn ? (
             <motion.div 
               className="max-w-6xl mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
               initial={{ opacity: 0, y: 20 }}
