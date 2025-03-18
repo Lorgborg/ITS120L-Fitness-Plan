@@ -556,15 +556,15 @@ function Signup() {
                <div className="grid grid-cols-3 gap-2 text-center">
                   <div>
                      <p className="font-bold" style={{ color: '#6D2323' }}>Protein</p>
-                     <p>{Math.round(dailyCalorie * 0.3 / 4)}g</p>
+                     <p style={{ color: 'black' }}>{Math.round(dailyCalorie * 0.3 / 4)}g</p>
                   </div>
                   <div>
                      <p className="font-bold" style={{ color: '#6D2323' }}>Carbs</p>
-                     <p>{Math.round(dailyCalorie * 0.4 / 4)}g</p>
+                     <p style={{ color: 'black' }}>{Math.round(dailyCalorie * 0.4 / 4)}g</p>
                   </div>
                   <div>
                      <p className="font-bold" style={{ color: '#6D2323' }}>Fat</p>
-                     <p>{Math.round(dailyCalorie * 0.3 / 9)}g</p>
+                     <p style={{ color: 'black' }}>{Math.round(dailyCalorie * 0.3 / 9)}g</p>
                   </div>
                </div>
                </div>
