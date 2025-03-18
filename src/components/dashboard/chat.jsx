@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
@@ -19,7 +20,7 @@ const Chat = (props) => {
 
     try {
       // Fetch response from the API
-      const res = await fetch('http://localhost:8080/api/getResponse', {
+      const res = await fetch('https://myfit-server.vercel.app/api/getResponse', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

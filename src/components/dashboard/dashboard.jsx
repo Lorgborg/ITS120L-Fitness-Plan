@@ -129,6 +129,10 @@ function Home() {
    };
 
    useEffect(() => {
+      console.log({logged: loggedIn})
+   }, [loggedIn])
+
+   useEffect(() => {
       setAnimateIn(true); // Trigger animations on page load
       
       // Simulate chart loading with slight delay
@@ -144,12 +148,22 @@ function Home() {
          method: 'POST',
          credentials: 'include'
       })
-      .then(response => response.json())
-      .then(data => {
-         if (data.message === 'Profile data') {
-            setMail(data.user.email);
+      .then(response => {
+         if(response.status == 201) {
+            response.json()
+            .then(data => {
+               if (data.message === 'Profile data') {
+                  setMail(data.user.email);
+                  setLoggedIn(true);
+               }
+            })
+         } else {
+            setLoading(false);
+            setLoggedIn(false);
          }
+        
       })
+      
       .catch(error => console.error('Error fetching profile:', error));
    }, []);
 
@@ -292,7 +306,7 @@ function Home() {
          
          {loading ? (
             <LoadingAnimation />
-         ) : user ? (
+         ) : loggedIn ? (
             <motion.div 
               className="max-w-6xl mx-auto bg-[#FDFCDC] rounded-lg overflow-hidden shadow-xl z-10"
               initial={{ opacity: 0, y: 20 }}
