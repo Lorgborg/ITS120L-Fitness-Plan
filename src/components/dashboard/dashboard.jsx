@@ -167,14 +167,7 @@ function Home() {
       })
       .then(response => response.json())
       .then(data => {
-         if(data.status  != 201 ){
-            setLoggedIn(false);
-            setLoading(false);
-         } else {
-            setLoggedIn(true);
-            setUser(data);
-         }
-         
+         setUser(data);
       })
       .catch(error => console.error('Error fetching user details:', error));
 
