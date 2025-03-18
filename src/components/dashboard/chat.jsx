@@ -107,34 +107,4 @@ const Chat = (props) => {
   
 };
 
-const styles = {
-
-  // messagesContainer: {
-  //   flex: 1,
-  //   overflowY: 'auto',
-  //   padding: '10px',
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  //   gap: '10px',
-  // },
-  message: {
-    padding: '8px',
-    borderRadius: '8px',
-    maxWidth: '80%',
-  },
-  form: {
-    display: 'flex',
-    padding: '10px',
-    borderTop: '1px solid #ccc',
-    backgroundColor: '#f9f9f9',
-  },
-  input: {
-    flex: 1,
-    padding: '8px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    marginRight: '10px',
-  }
-};
-
 export default Chat;

@@ -446,7 +446,11 @@ function Home() {
                                 xAxis={[{
                                    id: 'barCategories',
                                    data: Object.keys(weekMeals).map(date => {
-                                      const day = new Date(date).toLocaleDateString("en-US", { weekday: "short" });
+                                      let day = new Date(date).toLocaleDateString("en-US", { weekday: "narrow" });
+                                      if(new Date(date).toLocaleDateString("en-US", {weekday: "short"}) == "Sun") {
+                                        day = "Su"
+                                        console.log('change to su')
+                                      }
                                       return day;
                                    }),
                                    scaleType: 'band',
@@ -508,6 +512,7 @@ function Home() {
                           type="number" 
                           name="calories" 
                           placeholder="edit your food's calories..." 
+                          defaultValue={mealInfo.calories}
                           onChange={handleCalories} 
                           className="w-full p-2 border rounded-md bg-white text-gray-700 mt-1 mb-3 focus:outline-none focus:ring-2 focus:ring-[#00AFB9]"
                        />
