@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Chat from './chat.jsx';
 import Popup from "./popup.jsx";
@@ -102,6 +103,7 @@ function Home() {
    const [calorieToday, setCalorieToday] = useState(0);
    const [loading, setLoading] = useState(true);
    const [weekMeals, setWeekMeals] = useState({});
+   // eslint-disable-next-line no-unused-vars
    const [animateIn, setAnimateIn] = useState(false);
    const [chartLoaded, setChartLoaded] = useState(false);
 
