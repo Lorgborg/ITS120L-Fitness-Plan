@@ -92,7 +92,7 @@ function Signup() {
 
       const email = location.state?.email || '';
 
-      const res = await fetch("http://localhost:8080/api/signup", {
+      const res = await fetch("https://myfit-server.vercel.app/api/signup", {
          method: 'post',
          headers: {
             'Accept': 'application/json',
@@ -114,7 +114,7 @@ function Signup() {
       if(res.status === 200) {
          console.log("Account created successfully");
          console.log(credentialResponse)
-         const res = await fetch("http://localhost:8080/api/login", {
+         const res = await fetch("https://myfit-server.vercel.app/api/login", {
             method: 'post',
             credentials: "include",
             headers: {

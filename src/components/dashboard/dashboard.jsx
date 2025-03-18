@@ -140,7 +140,7 @@ function Home() {
    }, []);
 
    useEffect(() => {
-      fetch('http://localhost:8080/api/profile', {
+      fetch('https://myfit-server.vercel.app/api/profile', {
          method: 'POST',
          credentials: 'include'
       })
@@ -157,7 +157,7 @@ function Home() {
       if (!mail) return;
       setLoading(true);
 
-      fetch("http://localhost:8080/api/getUser", {
+      fetch("https://myfit-server.vercel.app/api/getUser", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -171,7 +171,7 @@ function Home() {
       })
       .catch(error => console.error('Error fetching user details:', error));
 
-      fetch("http://localhost:8080/api/getWeekMeals", {
+      fetch("https://myfit-server.vercel.app/api/getWeekMeals", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -184,7 +184,7 @@ function Home() {
          setWeekMeals(data);
       });
 
-      fetch("http://localhost:8080/api/getMeals", {
+      fetch("https://myfit-server.vercel.app/api/getMeals", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -211,7 +211,7 @@ function Home() {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      const res = await fetch("http://localhost:8080/api/addMeal", {
+      const res = await fetch("https://myfit-server.vercel.app/api/addMeal", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -234,7 +234,7 @@ function Home() {
    const submitFood = async (e) => {
       console.log(calorie);
       e.preventDefault();
-      const res = await fetch("http://localhost:8080/api/saveMeal", {
+      const res = await fetch("https://myfit-server.vercel.app/api/saveMeal", {
          method: 'POST',
          headers: {
             'Accept': 'application/json',
@@ -249,7 +249,7 @@ function Home() {
 
       if (res.status === 201) {
          setPopup(false);
-         fetch("http://localhost:8080/api/getMeals", {
+         fetch("https://myfit-server.vercel.app/api/getMeals", {
             method: 'POST',
             headers: {
                'Accept': 'application/json',
@@ -268,7 +268,7 @@ function Home() {
 
    const handleLogout = async (e) => {
       e.preventDefault();
-      const res = await fetch("http://localhost:8080/api/logout", {
+      const res = await fetch("https://myfit-server.vercel.app/api/logout", {
          method: "POST",
          credentials: "include",
          headers: {
