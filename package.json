@@ -23,6 +23,7 @@
     "node-fetch": "^3.3.2",
     "openai": "^4.86.2",
     "react": "^19.0.0",
+    "react-cookie": "^8.0.1",
     "react-dom": "^19.0.0",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^7.2.0",

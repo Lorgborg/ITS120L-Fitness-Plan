@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Chat from './chat.jsx';
 import Popup from "./popup.jsx";
-import { useNavigate } from 'react-router-dom';
-import { BarChart } from "@mui/x-charts";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { BarChart, ContinuousColorLegend } from "@mui/x-charts";
 import { motion } from "framer-motion";
+import { useCookies } from 'react-cookie'
 
 // Background decorative elements component
 const BackgroundShapes = () => (
@@ -106,6 +107,7 @@ function Home() {
    const [animateIn, setAnimateIn] = useState(false);
    const [chartLoaded, setChartLoaded] = useState(false);
    const [loggedIn, setLoggedIn] = useState(false);
+   const [cookies, setCookies] = useCookies();
 
    // Animation variants for staggered animations
    const containerVariants = {
@@ -134,37 +136,13 @@ function Home() {
 
    useEffect(() => {
       setAnimateIn(true); // Trigger animations on page load
-      
+      setMail(cookies.email)
       // Simulate chart loading with slight delay
       const chartTimer = setTimeout(() => {
         setChartLoaded(true);
       }, 800);
       
       return () => clearTimeout(chartTimer);
-   }, []);
-
-   useEffect(() => {
-      fetch('https://myfit-server.vercel.app/api/profile', {
-         method: 'POST',
-         credentials: 'include'
-      })
-      .then(response => {
-         if(response.status == 201) {
-            response.json()
-            .then(data => {
-               if (data.message === 'Profile data') {
-                  setMail(data.user.email);
-                  setLoggedIn(true);
-               }
-            })
-         } else {
-            setLoading(false);
-            setLoggedIn(false);
-         }
-        
-      })
-      
-      .catch(error => console.error('Error fetching profile:', error));
    }, []);
 
    useEffect(() => {
@@ -181,6 +159,10 @@ function Home() {
       })
       .then(response => response.json())
       .then(data => {
+         console.log({data: data, mail: mail})
+         if(mail == data.email) {
+            setLoggedIn(true)
+         }
          setUser(data);
       })
       .catch(error => console.error('Error fetching user details:', error));

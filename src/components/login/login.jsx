@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie'
 
 function Login() {
    const navigate = useNavigate();
@@ -11,6 +12,8 @@ function Login() {
    const [name, setName] = useState('');
    const [animateIn, setAnimateIn] = useState(false);
    const [credential, setCredential] = useState('');
+   const [logging, setLogging] = useState(false);
+   const [cookies, setCookie] = useCookies(['user'])
    
    // Trigger animations after component mounts
    useEffect(() => {
@@ -26,6 +29,7 @@ function Login() {
 
       console.log("Setting credential...", credentialResponse);
       console.log("Pulling from https://myfit-server.vercel.app/api/login");
+      setLogging(true);
 
       const res = await fetch("https://myfit-server.vercel.app/api/login", {
          method: 'post',
@@ -44,6 +48,8 @@ function Login() {
          setName(name);
          setEmail(email);
 
+         setCookie('email', email)
+
          console.log("Navigating with:", { credentialResponse, email, name });
 
          // Add exit animation before navigation
@@ -55,6 +61,7 @@ function Login() {
    };
 
    return (
+      (logging) ? <p>Trying to log you in</p> :
       <div className="h-screen w-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
          <Helmet>
             <title>YouFit - Login</title>
