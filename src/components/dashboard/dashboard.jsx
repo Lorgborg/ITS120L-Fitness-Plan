@@ -136,7 +136,11 @@ function Home() {
 
    useEffect(() => {
       setAnimateIn(true); // Trigger animations on page load
-      setMail(cookies.email)
+      if (cookies.email) {
+         setMail(cookies.email);
+      } else if (location.state?.email) {
+         setMail(location.state.email);
+      }
       // Simulate chart loading with slight delay
       const chartTimer = setTimeout(() => {
         setChartLoaded(true);
@@ -289,7 +293,7 @@ function Home() {
          
          {loading ? (
             <div className="flex justify-center items-center h-screen w-full">
-            <LoadingAnimation />
+               <LoadingAnimation />
             </div>
          ) : (loggedIn && user != null) ? (
             <motion.div 
