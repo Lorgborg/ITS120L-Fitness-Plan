@@ -4,7 +4,43 @@ import { Helmet } from "react-helmet";
 import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie'
+import { useCookies } from 'react-cookie';
+
+const LoadingAnimation = () => (
+  <div className="flex justify-center items-center h-screen">
+    <motion.div
+      className="flex space-x-2"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      {[0, 1, 2].map((dot) => (
+        <motion.div
+          key={dot}
+          className="w-4 h-4 rounded-full bg-[#0081A7]"
+          animate={{
+            y: ["0%", "-50%", "0%"],
+            opacity: [0.6, 1, 0.6]
+          }}
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            delay: dot * 0.2,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+      <motion.span 
+        className="text-[#0081A7] ml-2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        Loading...
+      </motion.span>
+    </motion.div>
+  </div>
+);
 
 function Login() {
    const navigate = useNavigate();
@@ -61,7 +97,11 @@ function Login() {
    };
 
    return (
-      (logging) ? <p>Trying to log you in</p> :
+      (logging) ? 
+      <div className="flex justify-center items-center h-screen w-full">
+         <LoadingAnimation />
+      </div>
+      :
       <div className="h-screen w-screen flex items-center justify-center bg-[#FEF9E1] relative overflow-hidden">
          <Helmet>
             <title>YouFit - Login</title>
