@@ -93,7 +93,8 @@ const getPHTDate = () => {
    return new Date(now.getTime() + 8 * 3600000);
 };
 
-function Home() {
+function Dashboard() {
+   const location = useLocation();
    const navigate = useNavigate();
    const [mail, setMail] = useState(null);
    const [user, setUser] = useState(null);
@@ -109,6 +110,7 @@ function Home() {
    const [loggedIn, setLoggedIn] = useState(false);
    const [cookies, setCookies] = useCookies();
 
+   console.log("I should run all the time")
    // Animation variants for staggered animations
    const containerVariants = {
      hidden: { opacity: 0 },
@@ -136,6 +138,7 @@ function Home() {
 
    useEffect(() => {
       setAnimateIn(true); // Trigger animations on page load
+      console.log("received:", {cookies})
       if (cookies.email) {
          setMail(cookies.email);
       } else if (location.state?.email) {
@@ -147,9 +150,10 @@ function Home() {
       }, 800);
       
       return () => clearTimeout(chartTimer);
-   }, []);
+   }, [cookies, location.state]);
 
    useEffect(() => {
+      console.log("received in the other butt:", {cookies})
       if (!mail) return;
       setLoading(true);
 
@@ -204,6 +208,10 @@ function Home() {
          setLoading(false);
       });
    }, [mail]);
+
+   if (!mail) {
+      return <div className="flex justify-center items-center h-screen">Loading user...</div>;
+   }
 
    const handleChange = (e) => {
       setMeal(e.target.value);
@@ -568,4 +576,4 @@ function Home() {
    );
 }
 
-export default Home;
+export default Dashboard;

@@ -5,6 +5,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { motion } from "framer-motion";
 
 const LoadingAnimation = () => (
   <div className="flex justify-center items-center h-screen">
@@ -43,6 +44,7 @@ const LoadingAnimation = () => (
 );
 
 function Login() {
+   
    const navigate = useNavigate();
    const [email, setEmail] = useState('');
    const [name, setName] = useState('');
@@ -91,7 +93,11 @@ function Login() {
          // Add exit animation before navigation
          setAnimateIn(false);
          setTimeout(() => {
-            navigate(data.message, { state: { credential: credentialResponse, email, name } });
+            setCookie('email', email, { path: "/" });
+            setCookie('name', name, { path: "/" });
+            console.log("tried to navigate with omsims", {cookies})
+            console.log("navigating to:", "/dashboard")
+            navigate("/dashboard", { state: { credential: credentialResponse, email, name } });
          }, 500);
       }
    };
