@@ -37,7 +37,7 @@ const LoadingAnimation = () => (
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        Loading...
+        Logging you in...
       </motion.span>
     </motion.div>
   </div>
